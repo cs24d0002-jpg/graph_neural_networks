@@ -1,4 +1,6 @@
 #packages
+from asyncio.log import logger
+from pyexpat import model
 import torch
 import argparse
 
@@ -30,6 +32,7 @@ def parse_args():
 
 def main():
 
+    print("Main File ----Configurations and Setup")
     config = load_config('configs/baseline_test.yaml')
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     logger = initiate_logging()
@@ -51,6 +54,8 @@ def main():
             dataset.num_classes, 
             config['hparams']
         ).to(device)
+        logger.info("--- Model Architecture ---")
+        logger.info(f"\n{str(model)}") # This logs the layers and parameters
         
         optimizer = torch.optim.Adam(model.parameters(), lr=config['hparams']['lr'])
         history = training_loop(model, data, optimizer, criterion, config, logger)
@@ -69,9 +74,15 @@ def main():
             out_channels, 
             config['hparams']
         ).to(device)
+        logger.info("--- Model Architecture ---")
+        logger.info(f"\n{str(model)}") # This logs the layers and parameters
         
+        optimizer = torch.optim.Adam(model.parameters(), lr=config['hparams']['lr'])
+        # def training_loop(model,data,optimizer,criterion, config, logger,loader=None):
         
-        
+        history = training_loop(model, None, optimizer, criterion, config, logger, train_loader=train_loader,val_loader=val_loader)
+        test_model(model, exp_dir, test_loader, config, logger,is_loader = True)
+        plot_training_results(exp_dir,history)
         
 if __name__ == "__main__":
     main()

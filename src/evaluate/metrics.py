@@ -11,14 +11,15 @@ def compute_metrics(logits, labels, mask, is_multi_label=False):
         mask: Boolean mask (train/val/test)
         is_multi_label: Set to True for datasets like PPI
     """
+    if(mask is not None):
     # Filter data based on the mask
-    masked_logits = logits[mask]
-    masked_labels = labels[mask]
+        masked_logits = logits[mask]
+        masked_labels = labels[mask]
 
     if is_multi_label:
         # For PPI: apply sigmoid and threshold at 0.5
-        preds = (torch.sigmoid(masked_logits) > 0.5).cpu().numpy()
-        labels_np = masked_labels.cpu().numpy()
+        preds = (torch.sigmoid(logits) > 0.5).cpu().numpy()
+        labels_np = labels.cpu().numpy()
         
         # Micro-F1 is the standard for PPI
         micro_f1 = f1_score(labels_np, preds, average='micro')

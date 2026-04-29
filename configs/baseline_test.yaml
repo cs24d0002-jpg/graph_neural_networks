@@ -1,6 +1,6 @@
 experiment_name: "cora_baselines"
-dataset: "PubMed"  # <--- This must match the code exactly
-model_type: "sage"  # <--- This must match the code exactly
+dataset: "PPI"  # <--- This must match the code exactly
+model_type: "gat_ppi"  # <--- This must match the code exactly
 hparams:
   hidden_channels: 64
   lr: 0.01
