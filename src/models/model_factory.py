@@ -1,4 +1,4 @@
-from .gnn_baselines import GAT_PPI, GCN, GAT, GraphSAGE, GraphSAGE_PPI
+from .gnn_baselines import GAT_PPI, GCN, GAT, GraphSAGE, GraphSAGE_PPI,RedditSAGE
 
 def get_model(model_name, in_channels, out_channels, hparams):
     model_name = model_name.lower()
@@ -16,11 +16,17 @@ def get_model(model_name, in_channels, out_channels, hparams):
     elif model_name == 'sage':
         return GraphSAGE(in_channels, out_channels, 
                          hidden_channels=hparams.get('hidden_channels', 64))
+    
     elif model_name == 'sage_ppi':
         return GraphSAGE_PPI(in_channels, 
                              hidden_channels=hparams.get('hidden_channels', 256), 
                              out_channels=out_channels)
+    
     elif model_name == 'gat_ppi':
         return GAT_PPI(in_channels, out_channels)
+    
+    elif model_name == 'reddit_sage':
+        return RedditSAGE(in_channels, out_channels, 
+                          hidden_channels=hparams.get('hidden_channels', 256))
     else:
         raise ValueError(f"Model {model_name} not defined in factory.")

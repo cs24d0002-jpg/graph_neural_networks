@@ -1,6 +1,4 @@
 #packages
-from asyncio.log import logger
-from pyexpat import model
 import torch
 import argparse
 
@@ -8,10 +6,10 @@ import argparse
 from src.evaluate.test_model_performance import test_model
 from src.data.data_loader import load_data
 from src.models.model_factory import get_model
-from src.utils.config import load_config
-from src.utils.common_functions import initiate_logging, plot_training_results,get_exp_dir
+from src.utils.common_functions import initiate_logging, plot_training_results,get_exp_dir,load_config
 from src.training.training_loop import training_loop
 
+print("Hello! This is the main file for running GNN research baselines. You can specify the dataset and model type in the configuration file (e.g., configs/baseline_test.yaml). The code is modular, with separate files for data loading, model definition, training, and evaluation. Make sure to have the necessary datasets downloaded and placed in the correct directories as expected by PyG.")
 def parse_args():
     parser = argparse.ArgumentParser(description="GNN Research Baseline Runner")
     
@@ -38,51 +36,50 @@ def main():
     logger = initiate_logging()
     exp_dir = get_exp_dir(config['dataset'], config['model_type'])
     
+    dataset = None
+    train_loader, val_loader, test_loader = None, None, None
     
+    #Dataset
+    logger.info(f"Loading {config['dataset']} dataset...")
     if(config['dataset'].lower() in ['cora', 'citeseer', 'pubmed']):
-        
-        logger.info(f"Loading {config['dataset']} dataset...")
         dataset = load_data(config['dataset'])
         data = dataset[0].to(device)
         data.test_mask = data.test_mask if hasattr(data, 'test_mask') else None
-
-        criterion = torch.nn.CrossEntropyLoss()
-
-        model = get_model(
-            config['model_type'], 
-            dataset.num_features, 
-            dataset.num_classes, 
-            config['hparams']
-        ).to(device)
-        logger.info("--- Model Architecture ---")
-        logger.info(f"\n{str(model)}") # This logs the layers and parameters
-        
-        optimizer = torch.optim.Adam(model.parameters(), lr=config['hparams']['lr'])
-        history = training_loop(model, data, optimizer, criterion, config, logger)
-    
-        test_model(model, exp_dir, data, config, logger)
-        plot_training_results(exp_dir,history)
-    elif(config['dataset'].lower() in ['ppi']):
-        logger.info(f"Loading {config['dataset']} dataset...")
+    else:
         train_loader, val_loader, test_loader, in_channels, out_channels = load_data(config['dataset'])
+    criterion = torch.nn.CrossEntropyLoss()
         
+    #Loss Function
+    if(config['dataset'].lower() =='ppi'):
         criterion = torch.nn.BCEWithLogitsLoss()
-        
-        model = get_model(
-            config['model_type'], 
-            in_channels, 
-            out_channels, 
-            config['hparams']
-        ).to(device)
-        logger.info("--- Model Architecture ---")
-        logger.info(f"\n{str(model)}") # This logs the layers and parameters
-        
-        optimizer = torch.optim.Adam(model.parameters(), lr=config['hparams']['lr'])
-        # def training_loop(model,data,optimizer,criterion, config, logger,loader=None):
-        
-        history = training_loop(model, None, optimizer, criterion, config, logger, train_loader=train_loader,val_loader=val_loader)
+
+    #Model Definition
+    model = get_model(
+        config['model_type'], 
+        dataset.num_features, 
+        dataset.num_classes, 
+        config['hparams']
+    ).to(device)
+    logger.info("--- Model Architecture ---")
+    logger.info(f"\n{str(model)}") # This logs the layers and parameters
+    
+    #Optimizer
+    optimizer = torch.optim.Adam(model.parameters(), lr=config['hparams']['lr'])
+    
+    if(dataset is not None):
+        #Model Training and Validation
+        history = training_loop(model=model, data=data, optimizer=optimizer, criterion=criterion, config=config, logger=logger)
+
+        #Model Testing
+        test_model(model, exp_dir, data, config, logger)
+    else:
+        #Model Training and Validation
+        history = training_loop(model=model, data=None, optimizer=optimizer, criterion=criterion, config=config, logger=logger, train_loader=train_loader,val_loader=val_loader)
+
+        #Model Testing
         test_model(model, exp_dir, test_loader, config, logger,is_loader = True)
-        plot_training_results(exp_dir,history)
-        
+    
+    #Plotting Training Results
+    plot_training_results(exp_dir,history)
 if __name__ == "__main__":
     main()

@@ -5,7 +5,7 @@ from src.evaluate.metrics import compute_metrics
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-def train_one_epoch(model, optimizer, criterion, loader=None, data=None):
+def train_one_epoch(model, optimizer, criterion, loader=None, data=None,is_neighbor_loader=False):
     model.train()
     if loader is None:
         optimizer.zero_grad()
@@ -22,19 +22,24 @@ def train_one_epoch(model, optimizer, criterion, loader=None, data=None):
             batch = batch.to(device)
             optimizer.zero_grad()
             out = model(batch.x, batch.edge_index)
-            loss = criterion(out, batch.y.float()) # PPI labels are already floats
+            if is_neighbor_loader:
+                # Only compute loss on the original batch nodes, which are at the start of the batch
+                batch_size = batch.batch_size
+                loss = criterion(out[:batch_size], batch.y[:batch_size])
+            else:
+                loss = criterion(out, batch.y.float()) # PPI labels are already floats
             loss.backward()
             optimizer.step()
             total_loss += loss.item()
         return total_loss / len(loader)
 
 @torch.no_grad()
-def evaluate(model, mask = None, data= None, loader = None):
+def evaluate(model, mask = None, data= None, loader = None,is_neighbor_loader=False):
     model.eval()
     if(loader is None):
         out = model(data.x, data.edge_index)
         return compute_metrics(out, data.y, mask)
-    else:
+    elif loader is not None and not is_neighbor_loader:
         all_preds, all_targets = [], []
         for batch in loader:
             batch = batch.to(device)
@@ -48,4 +53,16 @@ def evaluate(model, mask = None, data= None, loader = None):
         y_pred = torch.cat(all_preds, dim=0).numpy()
         y_true = y_true.flatten() 
         y_pred = y_pred.flatten()
-        return {'f1': f1_score(y_true, y_pred, average='micro')}
+        return {'f1': f1_score(y_true, y_pred, average='micro'),'accuracy': 0}
+    else:
+        total_correct = 0
+        total_nodes = 0
+        for batch in loader:
+            batch = batch.to(device)
+            out = model(batch.x, batch.edge_index)
+            batch_size = batch.batch_size
+            
+            pred = out[:batch_size].argmax(dim=-1)
+            total_correct += (pred == batch.y[:batch_size]).sum().item()
+            total_nodes += batch_size
+        return {'accuracy': total_correct / total_nodes,'f1': 0}

@@ -6,6 +6,8 @@ import sys
 from src.utils.config import load_config
 import torch
 import platform
+import yaml
+
 
 def initiate_logging():
     config = load_config('configs/baseline_test.yaml')
@@ -80,3 +82,7 @@ def setup_terminal_logger(exp_dir):
     logger.addHandler(sh)
     
     return logger
+def load_config(config_path):
+    with open(config_path, 'r') as file:
+        config = yaml.safe_load(file)
+    return config
