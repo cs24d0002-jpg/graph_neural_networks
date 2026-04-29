@@ -1,6 +1,6 @@
 experiment_name: "cora_baselines"
-dataset: "Cora"
-model_type: "gcn"  # <--- This must match the code exactly
+dataset: "PubMed"  # <--- This must match the code exactly
+model_type: "sage"  # <--- This must match the code exactly
 hparams:
   hidden_channels: 64
   lr: 0.01

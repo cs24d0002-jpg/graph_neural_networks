@@ -1,66 +1,77 @@
-import sys
+#packages
 import torch
-import platform
+import argparse
+
+#modular code import
+from src.evaluate.test_model_performance import test_model
 from src.data.data_loader import load_data
 from src.models.model_factory import get_model
-from src.training.engine import train_one_epoch, evaluate
 from src.utils.config import load_config
-from src.utils.common_functions import plot_training_results,get_exp_dir, setup_terminal_logger
+from src.utils.common_functions import initiate_logging, plot_training_results,get_exp_dir
+from src.training.training_loop import training_loop
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="GNN Research Baseline Runner")
+    
+    # Experiment Setup
+    parser.add_argument('--dataset', type=str, default='Cora', help='Cora, CiteSeer, PubMed, PPI, Reddit')
+    parser.add_argument('--model_type', type=str, default='gcn', help='gcn, gat')
+    
+    # Hyperparameters
+    parser.add_argument('--lr', type=float, default=0.01, help='Learning rate')
+    parser.add_argument('--epochs', type=int, default=200, help='Number of training epochs')
+    parser.add_argument('--hidden_channels', type=int, default=16, help='Hidden layer size')
+    parser.add_argument('--dropout', type=float, default=0.5, help='Dropout rate')
+    parser.add_argument('--batch_size', type=int, default=1024, help='Batch size for PPI/Reddit')
+    
+    args = parser.parse_args()
+    return args
+
 
 def main():
-    # 1. Setup
+
     config = load_config('configs/baseline_test.yaml')
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    
-    # 2. Data
-    dataset = load_data(config['dataset'])
-    data = dataset[0].to(device)
-    
-    # 3. Model
-    model = get_model(
-        config['model_type'], 
-        dataset.num_features, 
-        dataset.num_classes, 
-        config['hparams']
-    ).to(device)
-    
-    # 4. Optimizer
-    optimizer = torch.optim.Adam(model.parameters(), lr=config['hparams']['lr'])
-    criterion = torch.nn.CrossEntropyLoss()
-
+    logger = initiate_logging()
     exp_dir = get_exp_dir(config['dataset'], config['model_type'])
-    logger = setup_terminal_logger(exp_dir)
-    logger.info(f"Starting Experiment: {config['experiment_name']}")
-    logger.info(f"OS: {platform.system()} {platform.release()}")
-    logger.info(f"Python Version: {sys.version}")
-    logger.info(f"PyTorch Version: {torch.__version__}")
-    if torch.cuda.is_available():
-        logger.info(f"GPU: {torch.cuda.get_device_name(0)}")
-    logger.info(f"Using Device: {'cuda' if torch.cuda.is_available() else 'cpu'}")
     
-    best_val_acc = 0
-    history = {'train_loss': [], 'val_acc': []}
-
-    for epoch in range(1, config['hparams']['epochs'] + 1):
-        loss = train_one_epoch(model, data, optimizer, criterion)
-        val_metrics = evaluate(model, data, data.val_mask)
+    
+    if(config['dataset'].lower() in ['cora', 'citeseer', 'pubmed']):
         
-        # Record history
-        history['train_loss'].append(loss)
-        history['val_acc'].append(val_metrics['accuracy'])
+        logger.info(f"Loading {config['dataset']} dataset...")
+        dataset = load_data(config['dataset'])
+        data = dataset[0].to(device)
+        data.test_mask = data.test_mask if hasattr(data, 'test_mask') else None
 
-        # Save Best Model
-        if val_metrics['accuracy'] > best_val_acc:
-            best_val_acc = val_metrics['accuracy']
-            # torch.save(model.state_dict(), f'{model_save_path}/best_model.pt')
-            torch.save(model.state_dict(), exp_dir / "best_model.pt")
-            logger.info(f"Epoch {epoch:03d} | New Best Val Acc: {best_val_acc:.4f} - Saved!")
+        criterion = torch.nn.CrossEntropyLoss()
 
-        if epoch % 20 == 0:
-            logger.info(f"Epoch {epoch:03d} | Loss: {loss:.4f} | Val Acc: {val_metrics['accuracy']:.4f}")
-
-    # Plot results after training
-    plot_training_results(exp_dir,history)
-
+        model = get_model(
+            config['model_type'], 
+            dataset.num_features, 
+            dataset.num_classes, 
+            config['hparams']
+        ).to(device)
+        
+        optimizer = torch.optim.Adam(model.parameters(), lr=config['hparams']['lr'])
+        history = training_loop(model, data, optimizer, criterion, config, logger)
+    
+        test_model(model, exp_dir, data, config, logger)
+        plot_training_results(exp_dir,history)
+    elif(config['dataset'].lower() in ['ppi']):
+        logger.info(f"Loading {config['dataset']} dataset...")
+        train_loader, val_loader, test_loader, in_channels, out_channels = load_data(config['dataset'])
+        
+        criterion = torch.nn.BCEWithLogitsLoss()
+        
+        model = get_model(
+            config['model_type'], 
+            in_channels, 
+            out_channels, 
+            config['hparams']
+        ).to(device)
+        
+        
+        
+        
 if __name__ == "__main__":
     main()

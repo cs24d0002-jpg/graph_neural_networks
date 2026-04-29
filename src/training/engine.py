@@ -2,9 +2,11 @@ import torch
 
 from src.evaluate.metrics import compute_metrics
 
-def train_one_epoch(model, data, optimizer, criterion,loader=None):
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+def train_one_epoch(model, optimizer, criterion, loader=None, data=None):
     model.train()
-    if loader == None:
+    if loader is None:
         optimizer.zero_grad()
         # Handle both Homogeneous (data.x) and Heterogeneous data
         out = model(data.x, data.edge_index)
@@ -14,15 +16,14 @@ def train_one_epoch(model, data, optimizer, criterion,loader=None):
         return loss.item()
     else:
         for batch in loader:
+            batch = batch.to(device)
             optimizer.zero_grad()
             out = model(batch.x, batch.edge_index)
-            if hasattr(batch, 'batch_size'): # For NeighborLoader
-                loss = criterion(out[:batch.batch_size], batch.y[:batch.batch_size])
-            else: # For PPI
-                loss = criterion(out, batch.y)
+            loss = criterion(out, batch.y)
             loss.backward()
             optimizer.step()
-            return loss.item()
+            total_loss += loss.item()
+        epoch_loss = total_loss / len(loader)
 
 @torch.no_grad()
 def evaluate(model, data, mask):

@@ -3,6 +3,24 @@ from datetime import datetime
 from pathlib import Path
 import logging
 import sys
+from src.utils.config import load_config
+import torch
+import platform
+
+def initiate_logging():
+    config = load_config('configs/baseline_test.yaml')
+    exp_dir = get_exp_dir(config['dataset'], config['model_type'])
+    logger = setup_terminal_logger(exp_dir)
+    logger.info(f"Starting Experiment: {config['experiment_name']}")
+    logger.info(f"OS: {platform.system()} {platform.release()}")
+    logger.info(f"Python Version: {sys.version}")
+    logger.info(f"PyTorch Version: {torch.__version__}")
+    if torch.cuda.is_available():
+        logger.info(f"GPU: {torch.cuda.get_device_name(0)}")
+    logger.info(f"Using Device: {'cuda' if torch.cuda.is_available() else 'cpu'}")
+    logger.info(f"Hyperparameters: {config['hparams']}")
+    
+    return logger
 
 def plot_training_results(exp_dir, history):
     fig, ax1 = plt.subplots(figsize=(10, 5))
