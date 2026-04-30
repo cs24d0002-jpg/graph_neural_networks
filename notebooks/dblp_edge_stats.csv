@@ -1,0 +1,7 @@
+Relation,Count
+term-to-paper,85810
+paper-to-term,85810
+paper-to-author,19645
+author-to-paper,19645
+paper-to-conference,14328
+conference-to-paper,14328
