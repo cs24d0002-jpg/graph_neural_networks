@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 import logging
 import sys
-from src.utils.config import load_config
+from src.utils.common_functions import load_config
 import torch
 import platform
 import yaml

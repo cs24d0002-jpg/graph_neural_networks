@@ -4,7 +4,7 @@ import argparse
 
 #modular code import
 from src.evaluate.test_model_performance import test_model
-from src.data.data_loader import load_data
+from src.data_loader.data_loader import load_data
 from src.models.model_factory import get_model
 from src.utils.common_functions import initiate_logging, plot_training_results,get_exp_dir,load_config
 from src.training.training_loop import training_loop
