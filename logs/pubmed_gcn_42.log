@@ -1,0 +1,18 @@
+=== Run started at 2026-06-10 22:25:51 ===
+Loading PubMed dataset...
+Dataset: PubMed()
+Number of nodes: 19717
+Number of edges: 88648
+Number of classes: 3
+Start training...
+Epoch 020 | Time: 0.01s | Loss: 0.8665 | Val Acc: 0.7480 | Test Acc: 0.7060
+Epoch 040 | Time: 0.01s | Loss: 0.5645 | Val Acc: 0.7740 | Test Acc: 0.7440
+Epoch 060 | Time: 0.01s | Loss: 0.3628 | Val Acc: 0.7860 | Test Acc: 0.7700
+Epoch 080 | Time: 0.01s | Loss: 0.2646 | Val Acc: 0.8020 | Test Acc: 0.7830
+Epoch 100 | Time: 0.01s | Loss: 0.2021 | Val Acc: 0.8000 | Test Acc: 0.7940
+Epoch 120 | Time: 0.01s | Loss: 0.1802 | Val Acc: 0.8000 | Test Acc: 0.7990
+Early stopping at epoch 126
+
+--- Final Results ---
+Test Accuracy: 0.7860
+Test Micro-F1:  0.7860

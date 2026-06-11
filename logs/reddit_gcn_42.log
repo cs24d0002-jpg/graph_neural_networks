@@ -1,0 +1,57 @@
+=== Run started at 2026-06-10 22:39:57 ===
+Loading Reddit dataset...
+Loading Reddit dataset...
+Start training...
+Epoch 001 | Time: 74.44s | Loss: 0.7167 | Train Acc: 0.8831 | Val Acc: 0.9232
+Epoch 002 | Time: 74.91s | Loss: 0.3802 | Train Acc: 0.9185 | Val Acc: 0.9132
+Epoch 003 | Time: 74.68s | Loss: 0.3417 | Train Acc: 0.9217 | Val Acc: 0.9181
+Epoch 004 | Time: 75.07s | Loss: 0.3229 | Train Acc: 0.9239 | Val Acc: 0.9188
+Epoch 005 | Time: 75.95s | Loss: 0.8829 | Train Acc: 0.8973 | Val Acc: 0.9090
+Epoch 006 | Time: 76.28s | Loss: 0.4681 | Train Acc: 0.9172 | Val Acc: 0.9199
+Epoch 007 | Time: 75.08s | Loss: 0.3411 | Train Acc: 0.9225 | Val Acc: 0.9170
+Epoch 008 | Time: 75.91s | Loss: 0.3206 | Train Acc: 0.9250 | Val Acc: 0.9202
+Epoch 009 | Time: 76.43s | Loss: 0.3172 | Train Acc: 0.9256 | Val Acc: 0.9161
+Epoch 010 | Time: 76.19s | Loss: 0.3459 | Train Acc: 0.9234 | Val Acc: 0.9201
+Epoch 011 | Time: 74.79s | Loss: 0.3217 | Train Acc: 0.9248 | Val Acc: 0.9140
+Epoch 012 | Time: 75.47s | Loss: 0.3239 | Train Acc: 0.9244 | Val Acc: 0.9184
+Epoch 013 | Time: 75.36s | Loss: 0.3143 | Train Acc: 0.9256 | Val Acc: 0.9155
+Epoch 014 | Time: 75.49s | Loss: 0.3198 | Train Acc: 0.9249 | Val Acc: 0.9204
+Epoch 015 | Time: 76.41s | Loss: 0.3171 | Train Acc: 0.9250 | Val Acc: 0.9180
+Epoch 016 | Time: 76.15s | Loss: 0.3202 | Train Acc: 0.9256 | Val Acc: 0.9238
+Epoch 017 | Time: 73.86s | Loss: 1.9517 | Train Acc: 0.8873 | Val Acc: 0.9032
+Epoch 018 | Time: 74.31s | Loss: 1.1622 | Train Acc: 0.9047 | Val Acc: 0.9150
+Epoch 019 | Time: 74.55s | Loss: 0.4875 | Train Acc: 0.9156 | Val Acc: 0.9105
+Epoch 020 | Time: 74.67s | Loss: 0.3858 | Train Acc: 0.9184 | Val Acc: 0.9008
+Epoch 021 | Time: 74.50s | Loss: 0.3425 | Train Acc: 0.9221 | Val Acc: 0.8999
+Epoch 022 | Time: 74.64s | Loss: 0.3298 | Train Acc: 0.9235 | Val Acc: 0.9127
+Epoch 023 | Time: 74.49s | Loss: 0.3251 | Train Acc: 0.9239 | Val Acc: 0.9100
+Epoch 024 | Time: 74.57s | Loss: 0.3164 | Train Acc: 0.9253 | Val Acc: 0.9044
+Epoch 025 | Time: 74.08s | Loss: 0.3153 | Train Acc: 0.9254 | Val Acc: 0.9101
+Epoch 026 | Time: 74.43s | Loss: 0.3143 | Train Acc: 0.9256 | Val Acc: 0.9085
+Epoch 027 | Time: 74.88s | Loss: 0.3161 | Train Acc: 0.9259 | Val Acc: 0.9060
+Epoch 028 | Time: 74.39s | Loss: 0.3189 | Train Acc: 0.9258 | Val Acc: 0.8909
+Epoch 029 | Time: 74.46s | Loss: 0.3271 | Train Acc: 0.9242 | Val Acc: 0.8921
+Epoch 030 | Time: 74.20s | Loss: 0.3150 | Train Acc: 0.9251 | Val Acc: 0.8986
+Epoch 031 | Time: 74.66s | Loss: 0.3148 | Train Acc: 0.9255 | Val Acc: 0.9007
+Epoch 032 | Time: 74.28s | Loss: 0.4193 | Train Acc: 0.9193 | Val Acc: 0.9018
+Epoch 033 | Time: 74.41s | Loss: 0.3412 | Train Acc: 0.9235 | Val Acc: 0.9088
+Epoch 034 | Time: 74.37s | Loss: 0.4441 | Train Acc: 0.9215 | Val Acc: 0.8489
+Epoch 035 | Time: 74.43s | Loss: 0.7281 | Train Acc: 0.9115 | Val Acc: 0.9086
+Epoch 036 | Time: 74.59s | Loss: 0.3622 | Train Acc: 0.9226 | Val Acc: 0.9034
+Epoch 037 | Time: 74.62s | Loss: 0.3265 | Train Acc: 0.9235 | Val Acc: 0.9011
+Epoch 038 | Time: 74.34s | Loss: 0.3252 | Train Acc: 0.9238 | Val Acc: 0.9079
+Epoch 039 | Time: 74.62s | Loss: 0.3172 | Train Acc: 0.9253 | Val Acc: 0.8951
+Epoch 040 | Time: 74.43s | Loss: 0.5883 | Train Acc: 0.9150 | Val Acc: 0.8951
+Epoch 041 | Time: 74.40s | Loss: 0.4902 | Train Acc: 0.9163 | Val Acc: 0.9026
+Epoch 042 | Time: 74.29s | Loss: 0.3406 | Train Acc: 0.9226 | Val Acc: 0.9035
+Epoch 043 | Time: 74.20s | Loss: 0.3294 | Train Acc: 0.9233 | Val Acc: 0.9058
+Epoch 044 | Time: 74.42s | Loss: 0.3163 | Train Acc: 0.9253 | Val Acc: 0.9014
+Epoch 045 | Time: 74.65s | Loss: 0.3164 | Train Acc: 0.9253 | Val Acc: 0.8864
+Epoch 046 | Time: 74.32s | Loss: 0.3165 | Train Acc: 0.9251 | Val Acc: 0.9018
+Epoch 047 | Time: 74.84s | Loss: 0.3160 | Train Acc: 0.9248 | Val Acc: 0.8935
+Epoch 048 | Time: 74.33s | Loss: 0.3155 | Train Acc: 0.9258 | Val Acc: 0.8996
+Epoch 049 | Time: 74.63s | Loss: 0.3638 | Train Acc: 0.9216 | Val Acc: 0.8606
+Epoch 050 | Time: 74.19s | Loss: 0.3320 | Train Acc: 0.9234 | Val Acc: 0.8938
+
+--- Final Results ---
+Test Accuracy: 0.9241

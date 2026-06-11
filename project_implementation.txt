@@ -1,0 +1,5 @@
+    Starting Point: For homophilic datasets (Cora, CiteSeer, PubMed, Reddit), begin with GCN and GAT. For heterophilic datasets (Cornell, Texas, Wisconsin, Chameleon, Squirrel), H2GCN, GPRGNN, and LINKX are strong, specialized baselines.
+
+    For Relational & Inductive Tasks: Tackle the knowledge graphs FB15K-237 and WN18RR using R-GCN or GraIL. Use GraphSAGE as a robust inductive baseline.
+
+    For Heterogeneous Graphs: HAN and HGT are excellent starting points for the complex, multi-typed nodes and relations in DBLP and AMiner.

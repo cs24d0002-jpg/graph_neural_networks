@@ -1,0 +1,16 @@
+=== Run started at 2026-06-10 22:01:18 ===
+Loading Cora dataset...
+Start training...
+Epoch 010 | Time: 0.01s | Loss: 1.8517 | Val Acc: 0.3040 | Test Acc: 0.3250
+Epoch 020 | Time: 0.01s | Loss: 1.6947 | Val Acc: 0.4940 | Test Acc: 0.5060
+Epoch 030 | Time: 0.01s | Loss: 1.5186 | Val Acc: 0.6640 | Test Acc: 0.6500
+Epoch 040 | Time: 0.01s | Loss: 1.3181 | Val Acc: 0.7200 | Test Acc: 0.7320
+Epoch 050 | Time: 0.01s | Loss: 1.0948 | Val Acc: 0.7340 | Test Acc: 0.7420
+Epoch 060 | Time: 0.01s | Loss: 0.9081 | Val Acc: 0.7580 | Test Acc: 0.7680
+Epoch 070 | Time: 0.01s | Loss: 0.7503 | Val Acc: 0.7600 | Test Acc: 0.7850
+Epoch 080 | Time: 0.01s | Loss: 0.6503 | Val Acc: 0.7640 | Test Acc: 0.7850
+Early stopping at epoch 85
+
+--- Final Results ---
+Test Accuracy: 0.7810
+Test Micro-F1:  0.7810
